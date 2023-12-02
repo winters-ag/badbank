@@ -1,14 +1,14 @@
 import React from 'react'
-import {UserContext} from './App.js'
+import {UserContext} from '../index.js'
 
-function Home() {
+function Alldata() {
   const ctx = React.useContext(UserContext);
   return (
     <div>
-      <h3>Home Component</h3>
+      <h3>Alldata Component</h3>
       {JSON.stringify(ctx.users)}
     </div>
   )
 }
 
-export default Home;
+export default Alldata;
