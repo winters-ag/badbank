@@ -6,7 +6,9 @@ function Alldata() {
   return (
     <div>
       <h3>Alldata Component</h3>
-      {JSON.stringify(ctx.users)}
+      {JSON.stringify(ctx.accounts)}
+      <br/>
+      {JSON.stringify(ctx.transactions)}
     </div>
   )
 }

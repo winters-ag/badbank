@@ -14,6 +14,11 @@ function CreateAccount() {
 
 
   function validate(field, label) {
+    if(label == 'password' && field.length < 8) {
+      setStatus('Password must be 8 characters long');
+      setTimeout(() => setStatus(''),3000);
+      return false;
+    }
     if(!field) {
       setStatus('Error: ' + label);
       setTimeout(() => setStatus(''),3000);

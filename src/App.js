@@ -10,46 +10,49 @@ import Login                       from './bankfiles/login.js'
 import Withdraw                    from './bankfiles/withdraw.js'
 import Nav                         from './bankfiles/navbar.js';
 import React                       from 'react';
-import                                  'react-bootstrap';
+import {useState,useEffect}        from 'react';
+import axios                       from 'axios'
 import                                  './App.css';
-import  {Route,Routes, HashRouter} from 'react-router-dom';
-import { UserContext }                 from './index.js'
+import {Route,Routes, HashRouter}  from 'react-router-dom';
+import { UserContext }             from './index.js'
 
 
 function App() {
+
+  const [accounts,setAccounts]             = useState([]);
+  const [transactions, setTransactions]   = useState([]);
+
+  useEffect(() => {
+    axios.get('accounts.json')
+    .then(response => {
+      console.log(response);
+      setAccounts(response.data);
+    })
+
+    axios.get('transactions.json')
+    .then(response => {
+      console.log(response);
+      setTransactions(response.data);
+    })
+  }, []);
   return (
     <>
       <HashRouter>
           <Nav />
-          <UserContext.Provider value={{users:[{name:'Alan', email:'test@gmail.com',password:'pass123',balance:'5000'}]}}>
+          <UserContext.Provider value={{accounts:accounts,transactions:transactions}}>
             <Routes>
-                <Route path="/"                 exact          element={<Home />}     />
-                <Route path="/alldata/"         exact          element={<Alldata />}    />
+                <Route path="/"                 exact          element={<Home />}    />
+                <Route path="/alldata/"         exact          element={<Alldata />} />
                 <Route path="/balance/"         exact          element={<Balance />} />
                 <Route path="/context/"         exact          element={<Context />} />
                 <Route path="/createaccount/"   exact          element={<CreateAccount />} />
                 <Route path="/deposit/"         exact          element={<Deposit />} />
                 <Route path="/login/"           exact          element={<Login />} />
-                <Route path="/withdraw/"        exact          element={<Withdraw />} />
+                <Route path="/withdraw/"        exact          element={<Withdraw />}/>
             </Routes>
           </UserContext.Provider>
       </HashRouter>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+
     </>
   );
 }
