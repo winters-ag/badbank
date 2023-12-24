@@ -1,5 +1,6 @@
-import React from 'react'
-import {UserContext, Card} from '../index.js'
+import React from 'react';
+import {UserContext, Card} from '../index.js';
+import axios from 'axios';
 
 const useState = React.useState;
 const useContext = React.useContext;
@@ -11,10 +12,11 @@ function CreateAccount() {
   const [email, setEmail]        = useState('');
   const [password, setPassword]  = useState('');
   const ctx = useContext(UserContext);
+  let accounts = ctx.accounts;
 
 
   function validate(field, label) {
-    if(label == 'password' && field.length < 8) {
+    if(label === 'password' && field.length < 8) {
       setStatus('Password must be 8 characters long');
       setTimeout(() => setStatus(''),3000);
       return false;
@@ -24,6 +26,11 @@ function CreateAccount() {
       setTimeout(() => setStatus(''),3000);
       return false;
     }
+    if(label === 'email' && accounts.filter((el) => el.email === field)) {
+      setStatus('Account already exists');
+      setTimeout(() => setStatus(''), 10000);
+      return false;
+    }
     return true;
   }
 
@@ -31,7 +38,9 @@ function CreateAccount() {
     if (!validate(name,    'name'))          return;
     if (!validate(email,   'email'))         return;
     if (!validate(password,   'password'))   return;
-    ctx.users.push({name,email,password,balance:100});
+    ctx.accounts.push({name,email,password,balance:100});
+    //comment out axios until decide if I want to use it.
+    //axios.post('./accounts.json',ctx.accounts);
     setShow(false);
   }
 
