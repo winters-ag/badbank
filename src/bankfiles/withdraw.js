@@ -18,6 +18,11 @@ function Withdraw() {
   let accounts = ctx.accounts;
 
   function validate(field, label) {
+    if(isNaN(field)) {
+      setStatus('This is not a number');
+      setTimeout(() => setStatus(''),10000);
+      return false;
+    }
     if(!field || field <= 0) {
       setStatus('The withdraw must be larger than $0');
       setTimeout(() => setStatus(''), 10000);
@@ -42,8 +47,10 @@ function Withdraw() {
 
     let currAccount = accounts.filter((el) => el.email === accEmail);
     let newBalance = accBalance - Number(amount);
+    let currID = currAccount[0].id
     setAccBalance(newBalance);
     currAccount[0].balance = newBalance;
+    ctx.transactions.push({account:currID,type:'withdraw',amount,balance:newBalance,timestamp:Date.now()})
 
     setShow(false);
   }
@@ -51,7 +58,7 @@ function Withdraw() {
 
     return (
       <div className="container">
-        <div class="row align-items-start">
+        <div className="row align-items-start">
           <div className="col"><b>{accName}</b> Current Balance: {accBalance}</div>
           <div className="col">Account: {accEmail}</div>
           <div className="col">
@@ -61,7 +68,7 @@ function Withdraw() {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {accounts.map((item) => {
-                  return <Dropdown.Item onClick={() => setAccount(item.email)}>{item.name}</Dropdown.Item>
+                  return <Dropdown.Item key={item.id} onClick={() => setAccount(item.email)}>{item.name}</Dropdown.Item>
                 })}
               </Dropdown.Menu>
             </Dropdown>
@@ -86,11 +93,11 @@ function Withdraw() {
           {accountDropdown()}
           Amount <br />
           <input type="input" className="form-control" id="amount" placeholder="Enter amount" value={amount} onChange={e => setAmount(e.currentTarget.value)} /><br/>
-          <button type="submit" className="btn btn-danger" onClick={subAccount}>Withdraw</button>
+          <button type="submit" className="btn btn-danger" onClick={subAccount} disabled={!amount || accEmail===''}>Withdraw</button>
         </>
       ):(
         <>
-        <h5>Success</h5>
+        <h5>You have successfully withdrawn {amount} dollars</h5>
         <button type="submit" className="btn btn-light" onClick={clearForm}>Make another withdrawal</button>
         </>
       )}

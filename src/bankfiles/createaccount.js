@@ -22,12 +22,12 @@ function CreateAccount() {
       return false;
     }
     if(!field) {
-      setStatus('Error: ' + label);
+      setStatus('Error: ' + label + ' Field is required');
       setTimeout(() => setStatus(''),3000);
       return false;
     }
-    if(label === 'email' && accounts.filter((el) => el.email === field)) {
-      setStatus('Account already exists');
+    if(label === 'email' && accounts.filter((el) => el.email === field).length > 0) {
+      setStatus('An account with this email already exists');
       setTimeout(() => setStatus(''), 10000);
       return false;
     }
@@ -35,10 +35,11 @@ function CreateAccount() {
   }
 
   function handleCreate() {
+    let id = ctx.accounts.at(-1).id + 1;
     if (!validate(name,    'name'))          return;
     if (!validate(email,   'email'))         return;
     if (!validate(password,   'password'))   return;
-    ctx.accounts.push({name,email,password,balance:100});
+    ctx.accounts.push({id,name,email,password,balance:100});
     //comment out axios until decide if I want to use it.
     //axios.post('./accounts.json',ctx.accounts);
     setShow(false);
@@ -64,7 +65,7 @@ function CreateAccount() {
           <input type="input" className="form-control" id="email" placeholder="Enter Email" value={email} onChange={e => setEmail(e.currentTarget.value)} /><br/>
           Password<br />
           <input type="password" className="form-control" id="password" placeholder="Enter Password" value={password} onChange={e => setPassword(e.currentTarget.value)} /><br/>
-          <button type="submit" className="btn btn-dark" onClick={handleCreate}>Create Account</button>
+          <button type="submit" className="btn btn-dark" onClick={handleCreate} disabled={!name && !email && !password}>Create Account</button>
         </>
       ):(
         <>

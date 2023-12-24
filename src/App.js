@@ -8,7 +8,7 @@ import CreateAccount               from './bankfiles/createaccount.js'
 import Deposit                     from './bankfiles/deposit.js'
 import Login                       from './bankfiles/login.js'
 import Withdraw                    from './bankfiles/withdraw.js'
-import Nav                         from './bankfiles/navbar.js';
+import BankNav                     from './bankfiles/navbar.js';
 import React                       from 'react';
 import {useState,useEffect}        from 'react';
 import axios                       from 'axios'
@@ -38,7 +38,7 @@ function App() {
   return (
     <>
       <HashRouter>
-          <Nav />
+          <BankNav />
           <UserContext.Provider value={{accounts:accounts,transactions:transactions}}>
             <Routes>
                 <Route path="/"                 exact          element={<Home />}    />
