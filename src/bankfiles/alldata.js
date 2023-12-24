@@ -21,8 +21,8 @@ function Alldata() {
                   return <Card 
                     key={item.id}
                     bgcolor="primary" 
-                    header={`Account Email: ${item.email} Account Number:${item.id}`} 
-                    body={item.name + ' Current Balance ' + item.balance}/>
+                    header={`Account Email: ${item.email} || Account Number:${item.id}`} 
+                    body={item.name + ' || Current Balance ' + item.balance}/>
                 })}
               />
           </div>
@@ -36,8 +36,8 @@ function Alldata() {
                   return <Card
                     key={item.transactionNumber}
                     bgcolor="success"
-                    header={`Account: ${item.account} Transaction Type:  ${item.type}`}
-                    body={`Transaction Amount: ${item.amount} - Running Balance: ${item.balance}`}
+                    header={`Account Number: ${item.account} || Transaction Type:  ${item.type}`}
+                    body={`Transaction Amount: ${item.amount} || Running Balance: ${item.balance}`}
                   />
                 })
               }

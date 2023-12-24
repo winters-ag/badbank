@@ -2,6 +2,7 @@ import  { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import TriggerExample from './overlay';
 
 
 function BankNav() {
@@ -19,22 +20,32 @@ function BankNav() {
         />
         </Navbar.Brand>
         <Navbar.Brand>
-          <Link className="nav-link" to="/">Bad Bank</Link>
+          <TriggerExample tooltip="Return to the home page">
+            <Link className="nav-link" to="/">Bad Bank</Link>
+          </TriggerExample>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link>
-              <Link alt="Create Accounts on this page" className="nav-link" to="/createaccount">Create Account</Link>
+              <TriggerExample tooltip="Create an account on this page">
+                <Link className="nav-link" to="/createaccount">Create Account</Link>
+              </TriggerExample>
             </Nav.Link>
             <Nav.Link>
-              <Link className="nav-link" to="/deposit">Deposit</Link>
+              <TriggerExample tooltip="Deposit funds on this page">
+                <Link className="nav-link" to="/deposit">Deposit</Link>
+              </TriggerExample>
             </Nav.Link>
             <Nav.Link>
-              <Link className="nav-link" to="/withdraw">Withdraw</Link>
+              <TriggerExample tooltip="Withdraw funds on this page">
+                <Link className="nav-link" to="/withdraw">Withdraw</Link>
+              </TriggerExample>
             </Nav.Link>
             <Nav.Link>
-              <Link className="nav-link" to="/alldata">All Data</Link>
+              <TriggerExample tooltip="View all data on this page">
+                <Link className="nav-link" to="/alldata">All Data</Link>
+              </TriggerExample>
             </Nav.Link>          
           </Nav>
         </Navbar.Collapse>

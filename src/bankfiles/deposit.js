@@ -2,6 +2,7 @@ import React from 'react'
 import {UserContext, Card} from '../index.js'
 import Dropdown from 'react-bootstrap/Dropdown';
 import 'bootstrap';
+import TriggerExample from './overlay'
 
 
 const useState = React.useState;
