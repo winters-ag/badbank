@@ -2,13 +2,25 @@ import React from 'react'
 import {Card, UserContext} from '../index.js'
 
 function Alldata() {
+  const [data, setData] = React.useState('');
+
   const ctx = React.useContext(UserContext);
   let accounts = ctx.accounts;
   let transactions = ctx.transactions;
 
+  React.useEffect(() => {
+    fetch('/account/all')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setData(JSON.stringify(data));
+      })
+  })
 
   return (
     <>
+      <h3>All Data:</h3>
+      {data}
       <div className="container">
         <div className = "row align-items-start">
           <div className="col">

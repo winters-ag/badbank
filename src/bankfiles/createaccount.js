@@ -2,7 +2,7 @@ import React from 'react';
 import {UserContext, Card} from '../index.js';
 import axios from 'axios';
 
-const useState = React.useState;
+const useState   = React.useState;
 const useContext = React.useContext;
 
 function CreateAccount() {
@@ -39,9 +39,16 @@ function CreateAccount() {
     if (!validate(name,    'name'))          return;
     if (!validate(email,   'email'))         return;
     if (!validate(password,   'password'))   return;
-    ctx.accounts.push({id,name,email,password,balance:100});
-    //comment out axios until decide if I want to use it.
-    //axios.post('./accounts.json',ctx.accounts);
+    
+    console.log(name,email,password);
+
+    const url = `/account/create/${name}/${email}/${password}`;
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      });
+
     setShow(false);
   }
 

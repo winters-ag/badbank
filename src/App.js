@@ -20,14 +20,14 @@ import { UserContext }             from './index.js'
 function App() {
 
   const [accounts,setAccounts]             = useState([]);
-  const [transactions, setTransactions]   = useState([]);
+  const [transactions, setTransactions]    = useState([]);
 
   useEffect(() => {
     axios.get('accounts.json')
-    .then(response => {
-      console.log(response);
-      setAccounts(response.data);
-    })
+      .then(response => {
+        console.log(response);
+        setAccounts(response.data);
+      })
 
     axios.get('transactions.json')
     .then(response => {

@@ -49,6 +49,8 @@ function Deposit() {
     currAccount[0].balance = newBalance;
     ctx.transactions.push({account:currID,type:'deposit',amount,balance:newBalance,timestamp:Date.now()})
 
+    
+
     setShow(false);
   }
   function accountDropdown() {
