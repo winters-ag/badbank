@@ -1,6 +1,8 @@
 import React from 'react';
 import {UserContext, Card} from '../index.js';
 import axios from 'axios';
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { FbSignup, auth } from './fb.js'
 
 const useState   = React.useState;
 const useContext = React.useContext;
@@ -42,14 +44,25 @@ function CreateAccount() {
     
     console.log(name,email,password);
 
-    const url = `/account/create/${name}/${email}/${password}`;
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-      });
-
-    setShow(false);
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+      //Signed Up
+      const user = userCredential.user;
+      console.log(user.uid);
+      //create account in db
+      const url = `/account/create/${name}/${email}/${password}/${user.uid}`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          console.log(JSON.stringify(data));
+          setShow(false);
+        });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log({errorCode, errorMessage});
+      })
   }
 
   function clearForm() {

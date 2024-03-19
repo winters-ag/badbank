@@ -1,5 +1,3 @@
-import logo                        from './logo.svg';
-import About                       from './about.js';
 import Home                        from './bankfiles/home.js';
 import Alldata                     from './bankfiles/alldata.js'
 import Balance                     from './bankfiles/balance.js'
@@ -15,7 +13,7 @@ import axios                       from 'axios'
 import                                  './App.css';
 import {Route,Routes, HashRouter}  from 'react-router-dom';
 import { UserContext }             from './index.js'
-
+import { Container } from 'react-bootstrap'
 
 function App() {
 
@@ -36,10 +34,10 @@ function App() {
     })
   }, []);
   return (
-    <>
+    <Container>
       <HashRouter>
           <BankNav />
-          <UserContext.Provider value={{accounts:accounts,transactions:transactions}}>
+          <UserContext.Provider value={{accounts:accounts,transactions:transactions,user:''}}>
             <Routes>
                 <Route path="/"                 exact          element={<Home />}    />
                 <Route path="/alldata/"         exact          element={<Alldata />} />
@@ -53,7 +51,7 @@ function App() {
           </UserContext.Provider>
       </HashRouter>
 
-    </>
+    </Container>
   );
 }
 
