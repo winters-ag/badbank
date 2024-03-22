@@ -1,21 +1,28 @@
 import React from 'react'
 import {UserContext, Card} from '../index.js'
-import Dropdown from 'react-bootstrap/Dropdown';
+import { useEffect, useState, useContext } from 'react';
+import { auth } from './fb.js'
+import { onAuthStateChanged } from 'firebase/auth';
+import Container from 'react-bootstrap/Container';
 import 'bootstrap';
 
-
-const useState = React.useState;
-const useContext = React.useContext;
 
 function Withdraw() {
   const [amount, setAmount]          = useState('0');
   const [status, setStatus]          = useState('');
   const [show, setShow]              = useState(true);
-  const [accEmail, setAccEmail]      = useState('');
-  const [accName, setAccName]        = useState('');
   const [accBalance, setAccBalance]  = useState('');
-  const ctx = React.useContext(UserContext);
+  const [user, setUser]              = useState({})
+  const ctx = useContext(UserContext);
   let accounts = ctx.accounts;
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (currUser) => {
+      if(currUser) {
+        setUser(currUser.uid);
+      }
+    })
+  }, []);
 
   function validate(field, label) {
     if(isNaN(field)) {
@@ -35,47 +42,19 @@ function Withdraw() {
     return true;
   }
   
-  function setAccount(selectedEmail) {
-    let currAccount = accounts.filter((el) => el.email === selectedEmail);
-    setAccBalance(currAccount[0].balance);
-    setAccEmail(currAccount[0].email);
-    setAccName(currAccount[0].name);
-  }
-
-  function subAccount(selectedEmail) {
-    if(!validate(amount,      'amount')) return;
-
-    let currAccount = accounts.filter((el) => el.email === accEmail);
-    let newBalance = accBalance - Number(amount);
-    let currID = currAccount[0].id
-    setAccBalance(newBalance);
-    currAccount[0].balance = newBalance;
-    ctx.transactions.push({account:currID,type:'withdraw',amount,balance:newBalance,timestamp:Date.now()})
-
-    setShow(false);
-  }
-  function accountDropdown() {
-
-    return (
-      <div className="container">
-        <div className="row align-items-start">
-          <div className="col"><b>{accName}</b> Current Balance: {accBalance}</div>
-          <div className="col">Account: {accEmail}</div>
-          <div className="col">
-            <Dropdown>
-              <Dropdown.Toggle variant="warning" id="dropdown-basic">
-                {accName ? "Change Account" : "Select Account"}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {accounts.map((item) => {
-                  return <Dropdown.Item key={item.id} onClick={() => setAccount(item.email)}>{item.name}</Dropdown.Item>
-                })}
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-        </div>
-      </div>
-    );
+  function subAccount() {
+    //if(!validate(amount, 'amount')) return;
+    const withdraw = amount * -1;
+    console.log(withdraw);
+    const url = `/account/transaction/${user}/${withdraw}/Withdrawal`
+    fetch(url)
+      .then(data => {
+        console.log(`Withdrawal Made: ${data}`);
+        setShow(false);
+      })
+      .catch(error => {
+        console.log(error);
+      })
   }
 
   function clearForm() {
@@ -84,24 +63,25 @@ function Withdraw() {
   }
 
   return (
-    <Card
-      bgcolor="info"
-      header="Withdraw"
-      status={status}
-      body={show ? (
-        <>
-          {accountDropdown()}
-          Amount <br />
-          <input type="input" className="form-control" id="amount" placeholder="Enter amount" value={amount} onChange={e => setAmount(e.currentTarget.value)} /><br/>
-          <button type="submit" className="btn btn-danger" onClick={subAccount} disabled={!amount || accEmail===''}>Withdraw</button>
-        </>
-      ):(
-        <>
-        <h5>You have successfully withdrawn {amount} dollars</h5>
-        <button type="submit" className="btn btn-light" onClick={clearForm}>Make another withdrawal</button>
-        </>
-      )}
-    />
+    <Container>
+      <Card
+        bgcolor="info"
+        header="Withdraw"
+        status={status}
+        body={show ? (
+          <>
+            Amount <br />
+            <input type="input" className="form-control" id="amount" placeholder="Enter amount" value={amount} onChange={e => setAmount(e.currentTarget.value)} /><br/>
+            <button type="submit" className="btn btn-danger" onClick={subAccount} disabled={!amount}>Withdraw</button>
+          </>
+        ):(
+          <>
+          <h5>You have successfully withdrawn {amount} dollars</h5>
+          <button type="submit" className="btn btn-light" onClick={clearForm}>Make another withdrawal</button>
+          </>
+        )}
+      />
+    </Container>
   )
 }
 

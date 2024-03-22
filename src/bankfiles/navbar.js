@@ -42,11 +42,6 @@ function BankNav() {
                 <Navbar.Collapse id="basic-navbar-nav">
                   <Nav className="me-auto">
                     <Nav.Link>
-                      <TriggerExample tooltip="Create an account on this page">
-                        <Link className="nav-link" to="/createaccount">Create Account</Link>
-                      </TriggerExample>
-                    </Nav.Link>
-                    <Nav.Link>
                       <TriggerExample tooltip="Deposit funds on this page">
                         <Link className="nav-link" to="/deposit">Deposit</Link>
                       </TriggerExample>
@@ -60,12 +55,7 @@ function BankNav() {
                       <TriggerExample tooltip="View all data on this page">
                         <Link className="nav-link" to="/alldata">All Data</Link>
                       </TriggerExample>
-                    </Nav.Link>    
-                    <Nav.Link>
-                      <TriggerExample tooltip="View all data on this page">
-                        <Link className="nav-link" to="/login">Log Out</Link>
-                      </TriggerExample>
-                    </Nav.Link>        
+                    </Nav.Link>      
                   </Nav>
                   <Navbar.Text>
                     Signed in as: {user.email} 
@@ -102,11 +92,6 @@ function BankNav() {
                 <Navbar.Collapse id="basic-navbar-nav">
                   <Nav className="me-auto">
                     <Nav.Link>
-                      <TriggerExample tooltip="Create an account on this page">
-                        <Link className="nav-link" to="/createaccount">Create Account</Link>
-                      </TriggerExample>
-                    </Nav.Link>
-                    <Nav.Link>
                       <TriggerExample tooltip="View all data on this page">
                         <Link className="nav-link" to="/alldata">All Data</Link>
                       </TriggerExample>
@@ -115,7 +100,12 @@ function BankNav() {
                       <TriggerExample tooltip="View all data on this page">
                         <Link className="nav-link" to="/login">Login</Link>
                       </TriggerExample>
-                    </Nav.Link>        
+                    </Nav.Link>    
+                    <Nav.Link>
+                      <TriggerExample tooltip="Create an account on this page">
+                        <Link className="nav-link" to="/createaccount">Sign Up</Link>
+                      </TriggerExample>
+                    </Nav.Link>   
                   </Nav>
                 </Navbar.Collapse>
               </Container>

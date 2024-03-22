@@ -20,6 +20,7 @@ function Login() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential.user);
+        ctx.user = userCredential.user.uid;
       })
       .catch((error) => {
         console.log(error);
