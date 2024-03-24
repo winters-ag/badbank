@@ -21,20 +21,10 @@ function App() {
   const [transactions, setTransactions]    = useState([]);
 
   useEffect(() => {
-    axios.get('accounts.json')
-      .then(response => {
-        console.log(response);
-        setAccounts(response.data);
-      })
-
-    axios.get('transactions.json')
-    .then(response => {
-      console.log(response);
-      setTransactions(response.data);
-    })
+    
   }, []);
   return (
-    <Container>
+    <Container fluid>
       <HashRouter>
           <BankNav />
           <UserContext.Provider value={{accounts:accounts,transactions:transactions,user:''}}>

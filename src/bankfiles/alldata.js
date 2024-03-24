@@ -12,32 +12,15 @@ function Alldata() {
   const [user, setUser]                       = React.useState({});
 
   const ctx = React.useContext(UserContext);
-  let accounts = ctx.accounts;
-  let transactions = ctx.transactions;
   let ctxUser = ctx.user;
 
   React.useEffect(() => {
-    console.log(ctxUser);
-    setAccountID(ctx.user);
     fetch('/account/all')
       .then(response => response.json())
       .then(data => {
         setData(JSON.stringify(data));
         setDBAccounts(data);
       })
-
-    onAuthStateChanged(auth, (currUser) => {
-      if(currUser) {
-        setUser(currUser.uid);
-        ctx.user = currUser.uid;
-      }
-    })
-    fetch(`/account/${ctxUser}`)
-      .then(response => response.json())
-      .then(response => {
-        setAccTransactions(response.transactions);
-      })
-
   },[])
 
   function getAccount(){
@@ -45,7 +28,7 @@ function Alldata() {
         fetch(url)
           .then(response => response.json())
           .then(response => {
-            const resTransactions = response.transactions;
+            const resTransactions = response.savingstransactions;
             const accID = response.fbId;
             setAccTransactions(resTransactions);
             setAccountID(accID);
@@ -68,13 +51,13 @@ function Alldata() {
                   return <Card
                     bgcolor="success"
                     header={`Account ID: ${item.fbId} || Email:  ${item.email}`}
-                    body={`Account Name: ${item.name} || Balance: ${item.balance}`}
+                    body={`Account Name: ${item.name} || Balance: ${item.savingsbalance}`}
+                    footer={`Number on transactions: ${item.savingstransactions.length()}`}
                   />
                 })
               }
             />
           </div>
-          <Transactions className="col"/>
         </div>
       </div>
     </>

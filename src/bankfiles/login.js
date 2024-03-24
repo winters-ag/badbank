@@ -21,10 +21,11 @@ function Login() {
       .then((userCredential) => {
         console.log(userCredential.user);
         ctx.user = userCredential.user.uid;
+        window.location.href ="/";
       })
       .catch((error) => {
         console.log(error);
-      })
+      })    
   }
 
   return (

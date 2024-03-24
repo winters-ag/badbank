@@ -2,39 +2,45 @@ import { auth } from './fb.js';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState, useContext } from 'react';
 import {Card, UserContext} from '../index.js'
+import './bankstyles.css'
 
 
 
 
 function Transactions() {
+  const ctx = useContext(UserContext);
   const [transactions, setTransactions] = useState([]);
   const [email, setEmail]               = useState('');
-  const ctx = useContext(UserContext);
-  const ctxUser = ctx.user;
+  const [user, setUser]           = useState(ctx.user);
 
   
   useEffect(() => {
-    fetch(`/account/${ctx.user}`)
+    onAuthStateChanged(auth, (currUser) => {
+      if(currUser) {
+        setUser(currUser.uid);
+      }
+    })
+    fetch(`/account/${user}`)
     .then(response => response.json())
     .then(response => {
-      setTransactions(response.transactions);
+      setTransactions(response.savingstransactions);
       setEmail(response.email);
     })
-  },[])
-
+  },[user])
 
 
   return(
-    <div className="col">
+    <div className="col scroll">
       <Card
-        bgcolor="primary"
+        bgcolor="dark"
         header={`${email}: Transactions`}
         body={
           transactions.map((item) => {
             return <Card
-              bgcolor="success"
-              header={`Amount: ${item.amount} || Type: ${item.type}`}
-              body={`Date: ${Date(item.date)} || Running Balance: ${item.balance}`}
+              bgcolor={(item.type === "Deposit") ? "success" : "danger"}
+              header={`${item.type}`}
+              body={`Amount: ${item.amount} Date: ${(item.date)}`}
+              footer={`Running Balance: ${item.balance}`}
             />
           })
         }
@@ -42,6 +48,5 @@ function Transactions() {
     </div>
   )
 }
-
 
 export default Transactions

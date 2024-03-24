@@ -14,6 +14,7 @@ function BankNav() {
 
   function logOut() {
     auth.signOut();
+    window.location.href ="/";
   }
 
   auth.onAuthStateChanged((user) => {
@@ -50,12 +51,7 @@ function BankNav() {
                       <TriggerExample tooltip="Withdraw funds on this page">
                         <Link className="nav-link" to="/withdraw">Withdraw</Link>
                       </TriggerExample>
-                    </Nav.Link>
-                    <Nav.Link>
-                      <TriggerExample tooltip="View all data on this page">
-                        <Link className="nav-link" to="/alldata">All Data</Link>
-                      </TriggerExample>
-                    </Nav.Link>      
+                    </Nav.Link>   
                   </Nav>
                   <Navbar.Text>
                     Signed in as: {user.email} 
